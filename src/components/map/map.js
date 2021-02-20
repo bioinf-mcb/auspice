@@ -353,7 +353,7 @@ class Map extends React.Component {
     const east = _max([-180, minLng - (0.1 * lngRange)]);
     const west = _min([180, maxLng + (0.1 * lngRange)]);
 
-    return [L.latLng(south, west), L.latLng(north, east)];
+    return [L.latLng(48, 24), L.latLng(56, 13)];
   }
   /**
    * updates demes & transmissions when redux (tree) visibility or colorScale (i.e. colorBy) has changed
