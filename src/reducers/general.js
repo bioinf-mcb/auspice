@@ -10,7 +10,7 @@ not limited to <App>
 const query = queryString.parse(window.location.search);
 
 const defaults = {
-  language: "en"
+  language: "pl"
 };
 
 const getFirstPageToDisplay = () => {
