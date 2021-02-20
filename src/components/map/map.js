@@ -166,7 +166,7 @@ class Map extends React.Component {
       this.props.treeVersion !== nextProps.treeVersion // treeVersion change implies tree is ready (modified by the same action)
     ) {
       /* This is stored in state because it's used by both the map and the d3 overlay */
-      this.setState({responsive: {width: nextProps.width, height: nextProps.height}});
+      this.setState({ responsive: { width: nextProps.width, height: nextProps.height } });
     }
   }
   maybeSetupD3DOMNode() {
@@ -176,7 +176,7 @@ class Map extends React.Component {
       !this.state.d3DOMNode
     ) {
       const d3DOMNode = select("#map svg").attr("id", "d3DemesTransmissions");
-      this.setState({d3DOMNode});
+      this.setState({ d3DOMNode });
     }
   }
   modulateInterfaceForNarrativeMode(nextProps) {
@@ -186,7 +186,7 @@ class Map extends React.Component {
       this.state.map.dragging.disable();
       this.state.map.doubleClickZoom.disable();
     } else {
-      L.zoomControlButtons = L.control.zoom({position: "bottomright"}).addTo(this.state.map);
+      L.zoomControlButtons = L.control.zoom({ position: "bottomright" }).addTo(this.state.map);
       this.state.map.dragging.enable();
       this.state.map.doubleClickZoom.enable();
     }
@@ -206,7 +206,7 @@ class Map extends React.Component {
       timerStart("drawDemesAndTransmissions");
       /* data structures to feed to d3 latLongs = { tips: [{}, {}], transmissions: [{}, {}] } */
 
-      const {demeData, transmissionData, demeIndices, transmissionIndices} = createDemeAndTransmissionData(
+      const { demeData, transmissionData, demeIndices, transmissionIndices } = createDemeAndTransmissionData(
         this.props.nodes,
         this.props.visibility,
         this.props.geoResolution,
@@ -313,7 +313,7 @@ class Map extends React.Component {
         this.props.dateMaxNumeric,
         this.props.pieChart
       );
-      this.setState({demeData: newDemes, transmissionData: newTransmissions});
+      this.setState({ demeData: newDemes, transmissionData: newTransmissions });
     }
   }
   getGeoRange(demeData, demeIndices) {
@@ -372,7 +372,7 @@ class Map extends React.Component {
       /* This `if` statement added as part of https://github.com/nextstrain/auspice/issues/722
        * and should be a prime candidate for refactoring in https://github.com/nextstrain/auspice/issues/735
        */
-      const {demeData, transmissionData, demeIndices, transmissionIndices} = createDemeAndTransmissionData(
+      const { demeData, transmissionData, demeIndices, transmissionIndices } = createDemeAndTransmissionData(
         nextProps.nodes,
         nextProps.visibility,
         nextProps.geoResolution,
@@ -453,11 +453,11 @@ class Map extends React.Component {
 
     /* initial map bounds */
     if (this.props.mapTriplicate) {
-      southWest = L.latLng(-70, -360);
-      northEast = L.latLng(80, 360);
+      southWest = L.latLng(48, 13);
+      northEast = L.latLng(56, 24);
     } else {
-      southWest = L.latLng(-70, -180);
-      northEast = L.latLng(80, 180);
+      southWest = L.latLng(48, 13);
+      northEast = L.latLng(56, 24);
     }
 
     const bounds = L.latLngBounds(southWest, northEast);
@@ -490,11 +490,11 @@ class Map extends React.Component {
 
     map.getRenderer(map).options.padding = 2;
 
-    L.tileLayer(this.state.tilesSettings.api, {attribution: this.state.tilesSettings.attribution || ''})
+    L.tileLayer(this.state.tilesSettings.api, { attribution: this.state.tilesSettings.attribution || '' })
       .addTo(map);
 
     if (!this.props.narrativeMode) {
-      L.zoomControlButtons = L.control.zoom({position: "bottomright"}).addTo(map);
+      L.zoomControlButtons = L.control.zoom({ position: "bottomright" }).addTo(map);
     }
 
     if (this.state.tilesSettings.mapboxWordmark) {
@@ -506,7 +506,7 @@ class Map extends React.Component {
           return wordmark;
         }
       });
-      (new Wordmark({position: 'bottomleft'})).addTo(map);
+      (new Wordmark({ position: 'bottomleft' })).addTo(map);
     }
 
     /* Set up leaflet events */
@@ -517,16 +517,16 @@ class Map extends React.Component {
       }
     });
 
-    this.setState({map});
+    this.setState({ map });
   }
 
   maybeCreateMapDiv() {
     let container = null;
     if (this.state.responsive) {
       container = (
-        <div style={{position: "relative"}}>
+        <div style={{ position: "relative" }}>
           <div
-            onClick={() => {this.setState({userHasInteractedWithMap: true});}}
+            onClick={() => { this.setState({ userHasInteractedWithMap: true }); }}
             id="map"
             style={{
               height: this.state.responsive.height,
@@ -538,7 +538,7 @@ class Map extends React.Component {
     }
     return container;
   }
-  moveMapAccordingToData({geoResolutionChanged, visibilityChanged, demeData, demeIndices}) {
+  moveMapAccordingToData({ geoResolutionChanged, visibilityChanged, demeData, demeIndices }) {
     /* Given d3 data (may not be drawn) we can compute map bounds & move as appropriate */
     if (!this.state.boundsSet) {
       /* we are doing the initial render -> set map to the range of the data in view */
@@ -590,7 +590,7 @@ class Map extends React.Component {
     // delay to change map bounds
     this.bounds_timeout = window.setTimeout(
       (map) => {
-        map.fitBounds(window.L.latLngBounds(SWNE[0], SWNE[1]), {maxZoom});
+        map.fitBounds(window.L.latLngBounds(SWNE[0], SWNE[1]), { maxZoom });
       },
       this.props.narrativeMode ? 100 : 750,
       this.state.map
@@ -622,10 +622,10 @@ class Map extends React.Component {
         {this.maybeCreateMapDiv()}
         {this.props.narrativeMode ? null : (
           <button
-            style={{...tabSingle, ...styles.resetZoomButton}}
+            style={{ ...tabSingle, ...styles.resetZoomButton }}
             onClick={() => {
               this.fitMapBoundsToData(this.state.demeData, this.state.demeIndices);
-              this.setState({userHasInteractedWithMap: false});
+              this.setState({ userHasInteractedWithMap: false });
             }}
           >
             {t("reset zoom")}
