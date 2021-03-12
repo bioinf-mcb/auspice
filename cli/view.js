@@ -4,6 +4,7 @@
 const path = require("path");
 const fs = require("fs");
 const express = require("express");
+const https = require("https");
 const expressStaticGzip = require("express-static-gzip");
 const compression = require('compression');
 const nakedRedirect = require('express-naked-redirect');
@@ -127,7 +128,17 @@ const run = (args) => {
     res.sendFile(path.join(auspiceBuild.baseDir, "dist/index.html"), {headers: {"Cache-Control": "no-cache, no-store, must-revalidate"}});
   });
 
-  const server = app.listen(app.get('port'), app.get('host'), () => {
+  var options = {
+    key: fs.readFileSync('/sslcert/key.pem')
+    cert: fs.readFileSync('/sslcert/cert.pem')
+  };
+
+  const server = https.createServer(options, app).listen(app.get('port'), app.get('host'), function (){
+    winston.info("Auspice is running");
+  });
+
+
+  /* const server = app.listen(app.get('port'), app.get('host'), () => {
     utils.log("\n\n---------------------------------------------------");
     const host = app.get('host');
     const {port} = server.address();
@@ -150,7 +161,7 @@ const run = (args) => {
     }
 
     utils.error(`Uncaught error in app.listen(). Code: ${error.code}`);
-  });
+  }); */
 
 };
 
