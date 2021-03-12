@@ -129,7 +129,7 @@ const run = (args) => {
   });
 
   var options = {
-    key: fs.readFileSync('/sslcert/key.pem')
+    key: fs.readFileSync('/sslcert/key.pem'),
     cert: fs.readFileSync('/sslcert/cert.pem')
   };
 
