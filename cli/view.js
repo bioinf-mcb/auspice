@@ -133,9 +133,7 @@ const run = (args) => {
     cert: fs.readFileSync('/sslcert/cert.pem')
   };
 
-  const server = https.createServer(options, app).listen(app.get('port'), app.get('host'), function (){
-    winston.info("Auspice is running");
-  });
+  const server = https.createServer(options, app).listen(app.get('port'), app.get('host'), function ());
 
 
   /* const server = app.listen(app.get('port'), app.get('host'), () => {
